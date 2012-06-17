@@ -9,13 +9,17 @@ class MoviesController < ApplicationController
   def index
     @all_ratings = Movie.get_all_ratings
 
-    if params.has_key? 'order_by'
-      @ordered_by = params[:order_by]
-      @movies = Movie.all(:order => "#{@ordered_by} asc")
-    elsif params.has_key? 'ratings'
-      @movies = Movie.find_all_by_rating(params[:ratings])
+    if params.has_key? 'ratings'
+      @checked_ratings = params[:ratings].keys
+      @movies = Movie.find_all_by_rating(@checked_ratings)
     else  
       @movies = Movie.all
+    end
+
+    if params.has_key? 'order_by'
+      @ordered_by = params[:order_by]
+      @movies.sort! { |x,y| x.rating <=> y.rating }
+      # @movies = Movie.all(:order => "#{@ordered_by} asc")
     end
   end
 
