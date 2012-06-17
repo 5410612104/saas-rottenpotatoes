@@ -12,13 +12,23 @@ class MoviesController < ApplicationController
     @checked_ratings = params[:ratings] if params.has_key? 'ratings'
     @ordered_by = params[:order_by] if params.has_key? 'order_by'
 
+    # session.clear where user submit empty rating filters
+    if params.has_key? 'utf8'
+      session.delete :checked_ratings
+      session.delete :ordered_by
+    end
+
     # update session from incoming params
     session[:checked_ratings] = @checked_ratings if @checked_ratings
     session[:ordered_by] = @ordered_by if @ordered_by
 
-    # load params from session (if not exists)
-    @checked_ratings = session[:checked_ratings] unless @checked_ratings
-    @ordered_by = session[:ordered_by] unless @ordered_by
+    if !@checked_ratings && !@ordered_by && session[:checked_ratings]
+      @checked_ratings = session[:checked_ratings] unless @checked_ratings
+      @ordered_by = session[:ordered_by] unless @ordered_by
+
+      flash.keep
+      redirect_to movies_path({order_by: @ordered_by, ratings: @checked_ratings})
+    end
 
     if @checked_ratings
       if @ordered_by      
