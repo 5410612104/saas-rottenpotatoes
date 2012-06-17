@@ -8,11 +8,19 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.get_all_ratings
+
+    @checked_ratings = params[:ratings] if params.has_key? 'ratings'
     @ordered_by = params[:order_by] if params.has_key? 'order_by'
 
-    if params.has_key? 'ratings'
-      @checked_ratings = params[:ratings]  
-      
+    # update session from incoming params
+    session[:checked_ratings] = @checked_ratings if @checked_ratings
+    session[:ordered_by] = @ordered_by if @ordered_by
+
+    # load params from session (if not exists)
+    @checked_ratings = session[:checked_ratings] unless @checked_ratings
+    @ordered_by = session[:ordered_by] unless @ordered_by
+
+    if @checked_ratings
       if @ordered_by      
         @movies = Movie.find_all_by_rating(@checked_ratings, :order => "#{@ordered_by} asc")
       else
