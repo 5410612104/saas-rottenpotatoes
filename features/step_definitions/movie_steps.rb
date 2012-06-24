@@ -10,7 +10,7 @@ end
 #   on the same page
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  page.body.should =~ /#{e1}.*#{e2}/m
+  assert page.body =~ /#{e1}.*#{e2}/m, "#{e1} was not before #{e2}"
 end
 
 # Make it easier to express checking or unchecking several boxes at once
@@ -30,9 +30,9 @@ end
 Then /I should see all of the movies/ do
   movies = Movie.all
   
-  if movies.size.should == 10
+  if movies.size == 10
     movies.each do |movie|
-      page.body.should =~ /#{movie.title}/m
+      assert page.body =~ /#{movie.title}/m, "#{movie.title} did not appear"
     end
   else
     false
@@ -42,6 +42,6 @@ end
 Then /I should not see any movies/ do
   movies = Movie.all
   movies.each do |movie|
-    page.body.should_not =~ /#{movie.title}/m
+    assert true unless page.body =~ /#{movie.title}/m
   end
 end
