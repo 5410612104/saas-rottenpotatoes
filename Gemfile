@@ -18,7 +18,7 @@ group :development, :test do
 
   gem 'rspec-rails'
   gem 'ZenTest'
-  gem 'simplecov'
+  gem 'simplecov', :require => false
 end
 group :production do
   gem 'pg'
