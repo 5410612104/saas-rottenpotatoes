@@ -7,7 +7,7 @@
 
 # added to report code coverage
 require 'simplecov'
-SimpleClov.start 'rails'
+SimpleCov.start 'rails'
 
 require 'cucumber/rails'
 
