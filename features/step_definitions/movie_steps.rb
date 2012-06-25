@@ -45,3 +45,8 @@ Then /I should not see any movies/ do
     assert true unless page.body =~ /#{movie.title}/m
   end
 end
+
+Then /^the director of "(.*?)" should be "(.*?)"$/ do |movie_title, new_director|
+  movie = Movie.find_by_title movie_title
+  movie.director.should == new_director
+end
