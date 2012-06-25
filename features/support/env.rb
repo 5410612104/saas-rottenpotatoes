@@ -4,6 +4,11 @@
 # instead of editing this one. Cucumber will automatically load all features/**/*.rb
 # files.
 
+
+# added to report code coverage
+require 'simplecov'
+SimpleClov.start 'rails'
+
 require 'cucumber/rails'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
